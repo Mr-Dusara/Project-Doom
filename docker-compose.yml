@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    volumes:
+      - /home/ubuntu/work/db-data:/data/db
+    networks:
+      - app-network
+
+  backend:
+    image: test-backend:latest
+    container_name: backend
+    environment:
+      MONGO_URL: mongodb://mongodb/dd_db
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  frontend:
+    image: test-fronted:latest
+    container_name: frontend
+    ports:
+      - "80:80"
+    environment:
+      API_IP: "13.238.194.87"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
