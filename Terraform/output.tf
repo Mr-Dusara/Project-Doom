@@ -1,0 +1,15 @@
+output "cluster_name" {
+  value = aws_eks_cluster.main.name
+}
+
+output "cluster_endpoint" {
+  value = aws_eks_cluster.main.endpoint
+}
+
+output "node_security_group_id" {
+  value = aws_security_group.nodes.id
+}
+
+output "kubeconfig_command" {
+  value = "aws eks update-kubeconfig --region ${var.aws_region} --name ${aws_eks_cluster.main.name}"
+}
